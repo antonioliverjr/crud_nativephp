@@ -1,5 +1,10 @@
 <?php
+
 require __DIR__."/Source/autoload.php";
+
+$alunos = new \Source\AlunoModel();
+$alunos = $alunos->getAluAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -28,27 +33,27 @@ require __DIR__."/Source/autoload.php";
         </thead>
         <tbody>
             <?php
-            foreach($values as $value){
+            foreach($alunos as $aluno){
             ?>
             <tr>
                 <td scope="row" class="text-center">
-                    <span><?= $value['alunom'] ?></span>
+                    <span><?= $aluno->alunom ?></span>
                 </td>
                 <td class="text-center">
-                    <span><?= $value['alutel'] ?></span>
+                    <span><?= $aluno->alutel ?></span>
                 </td>
                 <td class="text-center">
-                    <span><?= $value['aluwha'] ?></span>
+                    <span><?= $aluno->aluwha ?></span>
                 </td>
                 <td class="text-center">
-                    <span><?= $value['curdes'] ?></span>
+                    <span><?= $aluno->curdes ?></span>
                 </td>
                 <td class="text-center">
-                    <span><?= $value['alucad'] ?></span>
+                    <span><?= $aluno->alucad ?></span>
                 </td>
                 <td class="d-flex">
-                    <a href="./view/insert.php?id=<?=$value['id_alu']?>" type="button" class="btn btn-success mr-2">Atualizar</a>
-                    <a href="./date/delete.php?id=<?=$value['id_alu']?>" type="button" class="btn btn-danger">Excluir</a>
+                    <a href="./insert.php?id=<?=$aluno->id_alu?>" type="button" class="btn btn-success mr-2">Atualizar</a>
+                    <a href="./date/delete.php?id=<?=$aluno->id_alu?>" type="button" class="btn btn-danger">Excluir</a>
                 </td>
             </tr>
             <?php 
@@ -56,12 +61,5 @@ require __DIR__."/Source/autoload.php";
             ?>
         </tbody>
     </table>
-
-    <?php
-        //$lista = new Cursos();
-        //$lista->getCurdes();
-        var_dump($lista);
-    ?>
-    
 </body>
 </html>

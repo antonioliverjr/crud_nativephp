@@ -2,12 +2,27 @@
 
 namespace Source;
 
-class AlunoModel
+use Source\Model\Models;
+
+class AlunoModel extends Models
 {
+    protected static $dbname = "public.tt_aluno";
+
+    public function getAluAll()
+    {
+        $query = $this->read("SELECT * FROM ".self::$dbname." inner join public.td_cursos on alucur = id_cur order by alunom");
+        return $query->fetchAll();
+    }
+
+    public function getAluId(int $id)
+    {
+        $query = $this->read("SELECT * FROM ".self::$dbname." inner join public.td_cursos on alucur = id_cur WHERE id_alu = :id", "id={$id}");
+        return $query->fetch();
+    }
 
 }
 
-
+/*
 function listing($id = null)
 {
 
@@ -25,14 +40,6 @@ function listing($id = null)
         where alu.id_alu = $id_alu";
         return $values = $conn->query($query);
     }
-}
-
-function option()
-{
-    $conn = new PDO('pgsql:host=localhost;dbname=jcl_tecno','postgres', 'gaproject');
-    $cursos = [];
-    $query = "SELECT * FROM public.td_cursos order by curdes";
-    return $cursos = $conn->query($query);
 }
 
 if(isset($_POST['form_alunom'])){

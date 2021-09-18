@@ -17,19 +17,21 @@ class CursoModel extends Models
         return $query->fetchAll();
     }
 
-    /*public function insertCur($data): ?bool
+    public function insertCur($data): ?int
     {
-
         $curdes = filter_var($data, FILTER_SANITIZE_STRING);
-        $db = Connect::getConn();
-        $stmt = $db->prepare("INSERT INTO public.td_cursos (curdes) VALUES ($curdes)");
-        var_dump($stmt);
+        $curdes = trim($curdes);
 
-        if($cursos != 0){
-            return true;
-        } else {
-            return false;
+        if(isset($curdes)){
+            $query = $this->read("SELECT * FROM ".self::$dbname." WHERE curdes = :curdes", "curdes={$curdes}");
+            if($query->rowCount() > 0){
+                $this->fail = "Este curso aparenta já está cadastrado!";
+                return null;
+            }
         }
-    }*/
+
+        $query = $this->insert("INSERT INTO ".self::$dbname." (curdes) VALUES (:curdes)", "curdes={$data}");
+        return $query;
+    }
 
 }
