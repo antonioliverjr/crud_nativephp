@@ -17,10 +17,15 @@ class CursoModel extends Models
     /**
      * @retun null|array
      */
-    public function getCurAll(): ?array
+    public function getCurAll(int $limit = 0, int $offset = 0): ?array
     {
-        $query = $this->read("SELECT * FROM ".self::$dbname);
+        $query = $this->read("SELECT * FROM ".self::$dbname, "limit={$limit}&offset={$offset}");
         return $query->fetchAll();
+    }
+
+    public function getCurTotal()
+    {
+        return $this->read("SELECT COUNT(id_cur) as total FROM ". self::$dbname)->fetch();
     }
 
     /**

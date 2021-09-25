@@ -1,8 +1,17 @@
 <?php
+
+use Source\Support\Pager;
+
 include __DIR__."/templates/header.php";
 
-$cursos = new \Source\CursoModel();
-$cursos = $cursos->getCurAll();
+$curso = new \Source\CursoModel();
+$curTot = $curso->getCurTotal();
+$getPage = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+
+$pager = new Pager("?page=");
+$pager->pager($curTot->total, 5, $getPage, 2);
+
+$cursos = $curso->getCurAll($pager->limit(), $pager->offset());
 
 $data = filter_input(INPUT_POST, "form_curso", FILTER_SANITIZE_STRING);
 if(isset($data))
@@ -62,6 +71,12 @@ if(isset($data))
                 </tbody>
             </table>
         </div>
+        <div class="row justify-content-center">
+        <?php
+            echo $pager->render();
+        ?>
+        </div>
+        
     <?php
         include __DIR__."/templates/footer.php";
     ?>

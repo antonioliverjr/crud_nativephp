@@ -18,14 +18,36 @@ abstract class Models
     public function read(string $select, string $params = null): ?\PDOStatement
     {
         try{
-            $stmt = Connect::getConn()->prepare($select);
+            parse_str($params, $params);
+            
             if($params){
-                parse_str($params, $params);
+                if(isset($params['limit'])){
+                    if($params['limit'] > 0 && $params['offset'] == 0){
+                        $stmt = Connect::getConn()->prepare($select." limit(:limit)");
+                    } elseif($params['limit'] > 0 && $params['offset'] > 0){
+                        $stmt = Connect::getConn()->prepare($select." limit(:limit) offset(:offset)");
+                    } else {
+                        $stmt = Connect::getConn()->prepare($select);
+                    }
+
+                    if($params['limit'] == 0){
+                        unset($params['limit']);
+                    }
+                    if($params['offset'] == 0){
+                        unset($params['offset']);
+                    }
+                } else {
+                    $stmt = Connect::getConn()->prepare($select);
+                }
+
                 foreach ($params as $key => $value) {
                     $type = (is_numeric($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR);
                     $stmt->bindValue(":{$key}", $value, $type);
                 }
+            }else{
+                $stmt = Connect::getConn()->prepare($select);
             }
+            
             $stmt->execute();
             return $stmt;
         }catch (\PDOException $exception){

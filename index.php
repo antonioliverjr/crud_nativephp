@@ -12,8 +12,6 @@ var_dump($result);
 $alunos = new \Source\AlunoModel();
 $alunos = $alunos->getAluAll();
 
-
-
 ?>
     <title>FSPHP CRUD</title>
 </head>

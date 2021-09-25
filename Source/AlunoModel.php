@@ -17,11 +17,18 @@ class AlunoModel extends Models
 
     /**
      * @return array|false
+     * @param int $limit
+     * @param int $offset
      */
-    public function getAluAll(): array
+    public function getAluAll(int $limit = 0, int $offset = 0): array
     {
-        $query = $this->read("SELECT * FROM ".self::$dbname." inner join public.td_cursos on alucur = id_cur order by alunom");
+        $query = $this->read("SELECT * FROM ".self::$dbname." inner join public.td_cursos on alucur = id_cur order by alunom", "limit={$limit}&offset={$offset}");
         return $query->fetchAll();
+    }
+
+    public function getAluTotal(): ?array
+    {
+        return $this->read("SELECT COUNT(id_alu) FROM ".self::$dbname)->fetch(\PDO::FETCH_ASSOC);
     }
 
     /**
