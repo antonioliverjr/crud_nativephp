@@ -1,0 +1,22 @@
+{
+    "name": "antoliverjr/crud_nativephp",
+    "description": "Treinando PHP nativo do curso UpInside com sistema de cadastro de alunos",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Antonio Oliveira",
+            "email": "antoniobatistajr@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "config":{
+        "vendor-dir": "vendor"
+    },
+    "autoload":{
+        "psr-4": {
+            "Source\\": "Source/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}

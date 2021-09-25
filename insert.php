@@ -2,7 +2,7 @@
 
 use Source\AlunoModel;
 
-require __DIR__."/Source/autoload.php";
+include __DIR__."/templates/header.php";
 
 $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
@@ -27,17 +27,10 @@ $cursos = new \Source\CursoModel();
 $cursos = $cursos->getCurAll();
 
 ?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Nativo</title>
 </head>
 <body>
-    <h1 class="text-center">Cadastrar Alunos</h1>
+    <h1 class="text-center"><?php if(isset($id)){echo "Atualizar Cadastro";}else {echo "Cadastrar Aluno";}?></h1>
         <form action="<?php if(isset($id)){echo 'insert.php?id='.$alunos->id_alu;}else{echo 'insert.php';} ?>" method="post">  
         <div class="form-row justify-content-center">
             <div class="form-row col-md-6">
@@ -61,26 +54,33 @@ $cursos = $cursos->getCurAll();
                     <label>Whatsapp</label>
                     <input class="form-control" type="text" name="aluwha" id="aluwha" value="<?= $alunos->aluwha ?? ''?>" maxlength="11">
                 </div>
-                <div class="form-group col-md-12">
-                    <label>Curso Pretendido</label>
-                    <select class="custom-select" name="alucur" id="form_alucur" required>
-                        <option value="">Selecionar</option>
-                        <?php
-                        foreach($cursos as $curso){
-                        ?>
-                        <option value="<?php echo $curso->id_cur; ?>" <?php if(isset($id)){if($curso->id_cur == $alunos->alucur){echo "selected";}} ?>><?php echo $curso->curdes; ?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-                    <a class="btn btn-dark" href="cursos.php">+</a>
+                <div class="form-group col-md-12 d-flex">
+                    <div style="width: 90%;">
+                        <label>Curso Pretendido</label>
+                        <select class="custom-select" name="alucur" id="form_alucur" required>
+                            <option value="">Selecionar</option>
+                            <?php
+                            foreach($cursos as $curso){
+                            ?>
+                            <option value="<?php echo $curso->id_cur; ?>" <?php if(isset($id)){if($curso->id_cur == $alunos->alucur){echo "selected";}} ?>><?php echo $curso->curdes; ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="text-center p-4" style="width: 10%;">
+                        <a class="btn btn-dark" href="cursos.php">+</a>
+                    </div>
                 </div>
                 <div class="form-group col-12 mt-4 text-center">
-                    <input class="btn btn-success mr-2" type="submit" value="Cadastrar">
+                    <input class="btn btn-success mr-2" type="submit" value="<?php if(isset($id)){echo "Atualizar";}else {echo "Cadastrar";}?>">
                     <a class="btn btn-dark" href="index.php">Voltar</a>
                 </div>
             </div>
         </div>
     </form>
+    <?php
+        include __DIR__."/templates/footer.php";
+    ?>
 </body>
 </html>

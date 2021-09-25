@@ -1,18 +1,20 @@
 <?php
+include __DIR__."/templates/header.php";
+/*
+use Source\Database\Connect;
 
-require __DIR__."/Source/autoload.php";
-
+$conn = Connect::getConn();
+$result = $conn->prepare("select * from dbo.testedb");
+$result->execute();
+$result = $result->fetchAll(\PDO::FETCH_ASSOC);
+var_dump($result);
+*/
 $alunos = new \Source\AlunoModel();
 $alunos = $alunos->getAluAll();
 
-?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+?>
     <title>FSPHP CRUD</title>
 </head>
 <body>
@@ -53,7 +55,7 @@ $alunos = $alunos->getAluAll();
                 </td>
                 <td class="d-flex">
                     <a href="./insert.php?id=<?=$aluno->id_alu?>" type="button" class="btn btn-success mr-2">Atualizar</a>
-                    <a href="./date/delete.php?id=<?=$aluno->id_alu?>" type="button" class="btn btn-danger">Excluir</a>
+                    <button type="button" class="btn btn-danger button-deleted" value="<?=$aluno->id_alu?>">Excluir</button>
                 </td>
             </tr>
             <?php 
@@ -61,5 +63,10 @@ $alunos = $alunos->getAluAll();
             ?>
         </tbody>
     </table>
+    <?php
+        include __DIR__."/templates/footer.php";
+    ?>
+    <script src="./assets/js/main.js"></script>
 </body>
 </html>
+    

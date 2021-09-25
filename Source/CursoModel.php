@@ -4,19 +4,29 @@ namespace Source;
 
 use Source\Model\Models;
 
+/**
+ *
+ */
 class CursoModel extends Models
 {
+    /**
+     * @var string
+     */
     protected static $dbname = 'public.td_cursos';
 
     /**
-     *
+     * @retun null|array
      */
-    public function getCurAll()
+    public function getCurAll(): ?array
     {
         $query = $this->read("SELECT * FROM ".self::$dbname);
         return $query->fetchAll();
     }
 
+    /**
+     * @param $data
+     * @return int|null
+     */
     public function insertCur($data): ?int
     {
         $curdes = filter_var($data, FILTER_SANITIZE_STRING);

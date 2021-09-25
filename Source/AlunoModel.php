@@ -4,28 +4,50 @@ namespace Source;
 
 use Source\Model\Models;
 
+/**
+ *
+ */
 class AlunoModel extends Models
 {
+
+    /**
+     * @var string
+     */
     protected static $dbname = "public.tt_aluno";
 
-    public function getAluAll()
+    /**
+     * @return array|false
+     */
+    public function getAluAll(): array
     {
         $query = $this->read("SELECT * FROM ".self::$dbname." inner join public.td_cursos on alucur = id_cur order by alunom");
         return $query->fetchAll();
     }
 
-    public function getAluId(int $id)
+    /**
+     * @param int $id
+     * @return null|\stdClass
+     */
+    public function getAluId(int $id): ?\stdClass
     {
         $query = $this->read("SELECT * FROM ".self::$dbname." inner join public.td_cursos on alucur = id_cur WHERE id_alu = :id", "id={$id}");
         return $query->fetch();
     }
 
+    /**
+     * @param string $cpf
+     * @return bool|null
+     */
     public function findAluCpf(string $cpf): ?bool
     {
         $query = $this->read("SELECT * FROM ".self::$dbname." WHERE alucpf = :cpf", "cpf={$cpf}");
         return $query->rowCount();
     }
 
+    /**
+     * @param array $data
+     * @return int|string|null
+     */
     public function insertAlu(array $data)
     {
         if(!isset($data)){
@@ -56,6 +78,17 @@ class AlunoModel extends Models
         $this->fail = "Não há dados para inserir ou atualizar!";
         return null;
         
+    }
+
+    /**
+     * @param $id_alu
+     * @return int|null
+     */
+    public function destroy($id_alu): ?int
+    {
+        $id['id_alu'] = $id_alu;
+        $query = $this->delete(self::$dbname, $id);
+        return $query ?? 1;
     }
 
 }

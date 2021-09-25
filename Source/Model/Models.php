@@ -4,8 +4,17 @@ namespace Source\Model;
 
 use Source\Database\Connect;
 
+/**
+ *
+ */
 abstract class Models
 {
+
+    /**
+     * @param string $select
+     * @param string|null $params
+     * @return \PDOStatement|null
+     */
     public function read(string $select, string $params = null): ?\PDOStatement
     {
         try{
@@ -25,6 +34,11 @@ abstract class Models
         }
     }
 
+    /**
+     * @param string $select
+     * @param string $data
+     * @return int|null
+     */
     public function insert(string $select, string $data): ?int
     {
         try{
@@ -45,7 +59,14 @@ abstract class Models
         }
     }
 
-    public  function update(string $entity, array $data, string $terms, string $params)
+    /**
+     * @param string $entity
+     * @param array $data
+     * @param string $terms
+     * @param string $params
+     * @return int|null
+     */
+    public  function update(string $entity, array $data, string $terms, string $params): ?int
     {
         try{
             $values = [];
@@ -63,8 +84,25 @@ abstract class Models
         }
     }
 
-    public function delete()
+    /**
+     * @param string $entity
+     * @param array $data
+     * @return int|null
+     */
+    public function delete(string $entity, array $data): ?int
     {
-
+        try{
+            $values = [];
+            foreach($data as $key => $key){
+                $values[] = "{$key} = :{$key}";
+            }
+            $values = implode(", ", $values);
+            $stmt = Connect::getConn()->prepare("DELETE FROM {$entity} WHERE {$values}");
+            $stmt->execute($data);
+            return $stmt->rowCount();
+        }catch (\PDOException $exception){
+            $this->fail = $exception;
+            return null;
+        }
     }
 }

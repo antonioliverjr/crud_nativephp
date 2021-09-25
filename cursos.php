@@ -1,5 +1,5 @@
 <?php
-require __DIR__."/Source/autoload.php";
+include __DIR__."/templates/header.php";
 
 $cursos = new \Source\CursoModel();
 $cursos = $cursos->getCurAll();
@@ -18,12 +18,6 @@ if(isset($data))
 
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD Nativo</title>
 </head>
 <body>
@@ -42,29 +36,34 @@ if(isset($data))
             </div>
         </div>
         </form>
-    <table>
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Nome do Curso</td>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            foreach($cursos as $curso){
-            ?>
-                <tr>
-                    <td>
-                        <?php echo $curso->id_cur; ?>
-                    </td>
-                    <td>
-                        <?php echo $curso->curdes; ?>
-                    </td>
-                </tr>
-            <?php
-            }
-            ?>
-        </tbody>
-    </table>
+        <div class="row justify-content-center">
+            <table class="table table-dark text-center col-sm-6">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Nome do Curso</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach($cursos as $curso){
+                    ?>
+                        <tr>
+                            <td>
+                                <?php echo $curso->id_cur; ?>
+                            </td>
+                            <td>
+                                <?php echo $curso->curdes; ?>
+                            </td>
+                        </tr>
+                    <?php
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+    <?php
+        include __DIR__."/templates/footer.php";
+    ?>
 </body>
 </html>
